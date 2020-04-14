@@ -8,6 +8,9 @@
         <variable
             name="score"
             type="rs.ac.ni.pmf.scoretracker.ObservableScore" />
+        <variable
+            name="liveValue"
+            type="androidx.lifecycle.MutableLiveData&lt;String>" />
     </data>
     <LinearLayout
         android:layout_width="match_parent"
@@ -140,13 +143,11 @@
                     android:onClick="@{() -> score.reset()}"
                     android:text="Reset"/>
 
-                <!--<EditText
+                <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@={score.x}"
-                    android:enabled="@{score.enabled}"
-                    />
-                <CheckBox
+                    android:text="@={liveValue}" />
+                <!--<CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Enable input"

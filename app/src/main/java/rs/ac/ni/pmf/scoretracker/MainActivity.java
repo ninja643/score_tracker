@@ -6,11 +6,15 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import rs.ac.ni.pmf.scoretracker.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity
 {
+	private static final String TAG = "SCORE_TRACKER";
+
 	private ScoreViewModel scoreViewModel;
 
 	@Override
@@ -26,7 +30,19 @@ public class MainActivity extends AppCompatActivity
 		scoreViewModel = new ViewModelProvider(this).get(ScoreViewModel.class);
 
 		ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+		binding.setLifecycleOwner(this);
 		binding.setScore(scoreViewModel.getObservableScore());
+		binding.setLiveValue(scoreViewModel.getLiveString());
+
+		MutableLiveData<String> liveData = scoreViewModel.getLiveString();
+		liveData.observe(this, new Observer<String>()
+		{
+			@Override
+			public void onChanged(final String s)
+			{
+				Log.i(TAG, "String changed: " + s);
+			}
+		});
 	}
 
 	@Override

@@ -1,7 +1,5 @@
 package rs.ac.ni.pmf.scoretracker;
 
-import android.util.Log;
-
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
@@ -9,21 +7,6 @@ public class ObservableScore extends BaseObservable
 {
 	private int scoreA;
 	private int scoreB;
-
-	private int x;
-	private boolean enabled;
-
-	@Bindable
-	public boolean isEnabled()
-	{
-		return enabled;
-	}
-
-	public void setEnabled(final boolean enabled)
-	{
-		this.enabled = enabled;
-		notifyPropertyChanged(BR.enabled);
-	}
 
 	@Bindable
 	public String getScoreA()
@@ -35,17 +18,6 @@ public class ObservableScore extends BaseObservable
 	public String getScoreB()
 	{
 		return String.valueOf(scoreB);
-	}
-
-	@Bindable
-	public String getX()
-	{
-		return String.valueOf(x);
-	}
-
-	public void setX(String x)
-	{
-		this.x = Integer.valueOf(x);
 	}
 
 	public void addScore(Team team, int score)
@@ -69,8 +41,6 @@ public class ObservableScore extends BaseObservable
 
 		notifyPropertyChanged(BR.scoreA);
 		notifyPropertyChanged(BR.scoreB);
-
-		Log.i("SCORE_TRACKER", "x = " + x);
 	}
 
 	public enum Team {
