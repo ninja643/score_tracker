@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="@color/colorPrimaryDark"
-            android:text="Team A"/>
+            android:text="@{score.teamA}"/>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -87,7 +87,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorPrimaryDark"
             android:gravity="center"
-            android:text="Team B"/>
+            android:text="@{score.teamB}"/>
 
         <LinearLayout
             android:orientation="horizontal"

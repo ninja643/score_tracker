@@ -28,21 +28,19 @@ public class MainActivity extends AppCompatActivity
 		}
 
 		scoreViewModel = new ViewModelProvider(this).get(ScoreViewModel.class);
+		final MutableLiveData<Integer> currentIndex = scoreViewModel.getCurrentIndex();
+		currentIndex.observe(this, new Observer<Integer>()
+		{
+			@Override
+			public void onChanged(final Integer index)
+			{
+				Log.i(TAG, "Index: " + index);
+			}
+		});
 
 		ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 		binding.setLifecycleOwner(this);
 		binding.setScore(scoreViewModel.getObservableScore());
-		binding.setLiveValue(scoreViewModel.getLiveString());
-
-		MutableLiveData<String> liveData = scoreViewModel.getLiveString();
-		liveData.observe(this, new Observer<String>()
-		{
-			@Override
-			public void onChanged(final String s)
-			{
-				Log.i(TAG, "String changed: " + s);
-			}
-		});
 	}
 
 	@Override

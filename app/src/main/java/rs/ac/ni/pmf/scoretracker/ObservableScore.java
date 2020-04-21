@@ -5,8 +5,29 @@ import androidx.databinding.Bindable;
 
 public class ObservableScore extends BaseObservable
 {
+	private final String teamA;
+	private final String teamB;
+
 	private int scoreA;
 	private int scoreB;
+
+	public ObservableScore(final String teamA, final String teamB)
+	{
+		this.teamA = teamA;
+		this.teamB = teamB;
+	}
+
+	@Bindable
+	public String getTeamA()
+	{
+		return teamA;
+	}
+
+	@Bindable
+	public String getTeamB()
+	{
+		return teamB;
+	}
 
 	@Bindable
 	public String getScoreA()
