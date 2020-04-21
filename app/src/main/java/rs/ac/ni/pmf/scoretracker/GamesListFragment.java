@@ -13,6 +13,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.ListFragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -75,10 +76,15 @@ public class GamesListFragment extends ListFragment
 	{
 		super.onStart();
 
-		if (getFragmentManager().findFragmentById(R.id.current_game_fragment) != null)
+		final Fragment gameFragment = getFragmentManager().findFragmentById(R.id.current_game_fragment);
+		if (gameFragment != null && gameFragment.isInLayout())
 		{
-			getListView().setSelection(scoreViewModel.getCurrentIndex().getValue());
 			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+			getListView().setItemChecked(scoreViewModel.getCurrentIndex().getValue(), true);
+		}
+		else
+		{
+			getListView().setChoiceMode(ListView.CHOICE_MODE_NONE);
 		}
 	}
 

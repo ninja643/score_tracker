@@ -49,11 +49,11 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
 	@Override
 	public void onGameSelected(final int gameIndex)
 	{
-		final CurrentGameFragment currentGameFragment =
-				(CurrentGameFragment) getSupportFragmentManager()
-						.findFragmentById(R.id.current_game_fragment);
-
-		if (currentGameFragment == null)
+//		final CurrentGameFragment currentGameFragment =
+//				(CurrentGameFragment) getSupportFragmentManager()
+//						.findFragmentById(R.id.current_game_fragment);
+//
+		if (findViewById(R.id.portrait_view_container) != null)
 		{
 			Log.i(TAG, "Creating game fragment");
 			final CurrentGameFragment gameFragment = new CurrentGameFragment();
