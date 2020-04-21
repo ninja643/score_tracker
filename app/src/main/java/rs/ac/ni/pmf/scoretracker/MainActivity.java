@@ -3,92 +3,70 @@ package rs.ac.ni.pmf.scoretracker;
 import android.os.Bundle;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-import rs.ac.ni.pmf.scoretracker.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends AppCompatActivity implements GamesListFragment.OnGameSelectedListener
 {
 	private static final String TAG = "SCORE_TRACKER";
 
-	private ScoreViewModel scoreViewModel;
+//	private ScoreViewModel scoreViewModel;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
 
-		if (savedInstanceState != null)
-		{
-			Log.i("SCORE_TRACKER", "got saved instance state " + savedInstanceState.toString());
-		}
+//		scoreViewModel = new ViewModelProvider(this).get(ScoreViewModel.class);
 
-		scoreViewModel = new ViewModelProvider(this).get(ScoreViewModel.class);
-		final MutableLiveData<Integer> currentIndex = scoreViewModel.getCurrentIndex();
-		currentIndex.observe(this, new Observer<Integer>()
+//		final MutableLiveData<Integer> currentIndex = scoreViewModel.getCurrentIndex();
+//		currentIndex.observe(this, new Observer<Integer>()
+//		{
+//			@Override
+//			public void onChanged(final Integer index)
+//			{
+//				Log.i(TAG, "Index from main: " + index);
+//				onGameSelected(index);
+//			}
+//		});
+
+		if (findViewById(R.id.portrait_view_container) != null)
 		{
-			@Override
-			public void onChanged(final Integer index)
+			if (savedInstanceState != null)
 			{
-				Log.i(TAG, "Index: " + index);
+				return;
 			}
-		});
 
-		ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-		binding.setLifecycleOwner(this);
-		binding.setScore(scoreViewModel.getObservableScore());
+			final GamesListFragment gamesListFragment = new GamesListFragment();
+			getSupportFragmentManager().beginTransaction()
+					.add(R.id.portrait_view_container, gamesListFragment)
+					.commit();
+		}
 	}
 
 	@Override
-	protected void onSaveInstanceState(@NonNull final Bundle outState)
+	public void onGameSelected(final int gameIndex)
 	{
-		super.onSaveInstanceState(outState);
-		Log.i("SCORE_TRACKER", "Saving instance state");
-	}
+		final CurrentGameFragment currentGameFragment =
+				(CurrentGameFragment) getSupportFragmentManager()
+						.findFragmentById(R.id.current_game_fragment);
 
-	@Override
-	protected void onStart()
-	{
-		super.onStart();
-//		Log.i("SCORE_TRACKER", "onStart() called");
-	}
+		if (currentGameFragment == null)
+		{
+			Log.i(TAG, "Creating game fragment");
+			final CurrentGameFragment gameFragment = new CurrentGameFragment();
 
-	@Override
-	protected void onRestart()
-	{
-		super.onRestart();
-//		Log.i("SCORE_TRACKER", "onRestart() called");
-	}
-
-	@Override
-	protected void onResume()
-	{
-		super.onResume();
-//		Log.i("SCORE_TRACKER", "onResume() called");
-	}
-
-	@Override
-	protected void onPause()
-	{
-		super.onPause();
-//		Log.i("SCORE_TRACKER", "onPause() called");
-	}
-
-	@Override
-	protected void onStop()
-	{
-		super.onStop();
-//		Log.i("SCORE_TRACKER", "onStop() called");
-	}
-
-	@Override
-	protected void onDestroy()
-	{
-		super.onDestroy();
-//		Log.i("SCORE_TRACKER", "onDestroy() called");
+			final FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+					.beginTransaction();
+			fragmentTransaction.replace(R.id.portrait_view_container, gameFragment);
+			fragmentTransaction.addToBackStack(null);
+			fragmentTransaction.commit();
+		}
+		else
+		{
+			Log.i(TAG, "Game fragment already exists");
+		}
 	}
 }
