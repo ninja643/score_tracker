@@ -5,7 +5,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -14,6 +13,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.ListFragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -56,7 +56,10 @@ public class GamesListFragment extends ListFragment
 	public void onCreate(@Nullable final Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		scoreViewModel = new ViewModelProvider(requireActivity()).get(ScoreViewModel.class);
+
+		final FragmentActivity activity = requireActivity();
+
+		scoreViewModel = new ViewModelProvider(activity).get(ScoreViewModel.class);
 
 		int layout = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
 				? android.R.layout.simple_list_item_activated_1
@@ -68,7 +71,7 @@ public class GamesListFragment extends ListFragment
 			teams.add(observableScore.getTeamA() + " - " + observableScore.getTeamB());
 		}
 
-		setListAdapter(new ArrayAdapter<String>(requireActivity(), layout, teams));
+		setListAdapter(new GamesListAdapter(activity, scoreViewModel.getObservableScores(), activity));
 	}
 
 	@Override
