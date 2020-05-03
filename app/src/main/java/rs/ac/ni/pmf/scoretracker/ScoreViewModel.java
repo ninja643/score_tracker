@@ -1,14 +1,17 @@
 package rs.ac.ni.pmf.scoretracker;
 
+import android.app.Application;
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+import rs.ac.ni.pmf.scoretracker.data.GameDetails;
 
-public class ScoreViewModel extends ViewModel
+public class ScoreViewModel extends AndroidViewModel
 {
 	private static final String TAG = "SCORE_TRACKER";
 
@@ -16,32 +19,41 @@ public class ScoreViewModel extends ViewModel
 
 	private MutableLiveData<Integer> currentIndex = new MutableLiveData<>();
 
-	private void loadData()
+	private ScoreTrackerRepository repository;
+
+	public ScoreViewModel(@NonNull final Application application)
 	{
-		observableScores.add(new ObservableScore("Partizan", "Joventut"));
-		observableScores.add(new ObservableScore("Limoges", "Treviso"));
-		observableScores.add(new ObservableScore("Joventut", "Olympiacos"));
-		observableScores.add(new ObservableScore("Real Madrid", "Olympiacos"));
-		currentIndex.setValue(0);
+		super(application);
+		repository = new ScoreTrackerRepository(application);
+
+		initializeData();
+	}
+
+	private void initializeData()
+	{
+		for (final GameDetails gameDetails : repository.getGamesDetails())
+		{
+			final ObservableScore gameScore = new ObservableScore(gameDetails.getId(), gameDetails.getTeamA(),
+					gameDetails.getTeamB(), repository);
+			gameScore.addScore(ObservableScore.Team.TEAM_A, gameDetails.getScoreA());
+			gameScore.addScore(ObservableScore.Team.TEAM_B, gameDetails.getScoreB());
+
+			observableScores.add(gameScore);
+		}
+
+		if (!observableScores.isEmpty())
+		{
+			currentIndex.setValue(0);
+		}
 	}
 
 	public List<ObservableScore> getObservableScores()
 	{
-		if (observableScores.isEmpty())
-		{
-			loadData();
-		}
-
 		return observableScores;
 	}
 
 	public ObservableScore getObservableScore()
 	{
-		if (observableScores.isEmpty())
-		{
-			loadData();
-		}
-
 		return observableScores.get(currentIndex.getValue());
 	}
 
@@ -50,11 +62,6 @@ public class ScoreViewModel extends ViewModel
 		if (currentIndex == null)
 		{
 			currentIndex = new MutableLiveData<>();
-
-			if (observableScores.isEmpty())
-			{
-				loadData();
-			}
 		}
 
 		return currentIndex;
