@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import rs.ac.ni.pmf.scoretracker.databinding.GameViewBinding;
@@ -30,7 +31,10 @@ public class CurrentGameFragment extends Fragment
 	{
 		binding = DataBindingUtil.inflate(inflater, R.layout.game_view, container, false);
 
-		scoreViewModel = new ViewModelProvider(requireActivity()).get(ScoreViewModel.class);
+		final FragmentActivity owner = requireActivity();
+		scoreViewModel =
+				new ViewModelProvider(owner, new ViewModelProvider.AndroidViewModelFactory(owner.getApplication()))
+						.get(ScoreViewModel.class);
 
 		scoreViewModel.getCurrentIndex().observe(getViewLifecycleOwner(), new Observer<Integer>()
 		{
@@ -43,7 +47,7 @@ public class CurrentGameFragment extends Fragment
 		});
 
 		View view = binding.getRoot();
-		binding.setLifecycleOwner(requireActivity());
+		binding.setLifecycleOwner(owner);
 		binding.setScore(scoreViewModel.getObservableScore());
 		return view;
 	}

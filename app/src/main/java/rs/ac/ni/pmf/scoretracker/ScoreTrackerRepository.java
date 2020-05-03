@@ -2,6 +2,8 @@ package rs.ac.ni.pmf.scoretracker;
 
 import java.util.List;
 
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
 import rs.ac.ni.pmf.scoretracker.data.GameDetails;
 import rs.ac.ni.pmf.scoretracker.data.ScoresDatabase;
 
@@ -52,5 +54,10 @@ public class ScoreTrackerRepository
 	public void clearScore(long gameId)
 	{
 		ScoresDatabase.databaseWriteExecutor.execute(() -> database.gamesDao().clearScore(gameId));
+	}
+
+	public MutableLiveData<Boolean> isReady()
+	{
+		return database.getDatabaseCreated();
 	}
 }

@@ -1,14 +1,10 @@
 package rs.ac.ni.pmf.scoretracker;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -59,17 +55,11 @@ public class GamesListFragment extends ListFragment
 
 		final FragmentActivity activity = requireActivity();
 
-		scoreViewModel = new ViewModelProvider(activity).get(ScoreViewModel.class);
+		Log.i(TAG, "GamesListFragment - Creating the view model");
 
-		int layout = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
-				? android.R.layout.simple_list_item_activated_1
-				: android.R.layout.simple_list_item_1;
-
-		final List<String> teams = new ArrayList<>();
-		for (final ObservableScore observableScore : scoreViewModel.getObservableScores())
-		{
-			teams.add(observableScore.getTeamA() + " - " + observableScore.getTeamB());
-		}
+		scoreViewModel =
+				new ViewModelProvider(activity, new ViewModelProvider.AndroidViewModelFactory(activity.getApplication()))
+						.get(ScoreViewModel.class);
 
 		setListAdapter(new GamesListAdapter(activity, scoreViewModel.getObservableScores(), activity));
 	}

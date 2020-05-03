@@ -1,6 +1,7 @@
 package rs.ac.ni.pmf.scoretracker.data;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -19,6 +20,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 public abstract class ScoresDatabase extends RoomDatabase
 {
 	public static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(4);
+	private static final String TAG = "SCORE_TRACKER";
 	private static final String DATABASE_NAME = "scores_database";
 
 	private static volatile ScoresDatabase instance;
@@ -33,6 +35,7 @@ public abstract class ScoresDatabase extends RoomDatabase
 			{
 				if (instance == null)
 				{
+					Log.i(TAG, "Creating the database instance");
 					instance = createDatabase(context);
 					// If the database already exists, then createdDatabase() won't update
 					// the mutable live data databaseCreated
@@ -46,19 +49,28 @@ public abstract class ScoresDatabase extends RoomDatabase
 
 	private static ScoresDatabase createDatabase(final Context context)
 	{
-		return Room.databaseBuilder(context.getApplicationContext(),
-				ScoresDatabase.class,
-				DATABASE_NAME)
+		Log.i(TAG, "createDatabase() working on context: " + context.getApplicationContext().getApplicationInfo().toString());
+
+		return Room.databaseBuilder(context.getApplicationContext(), ScoresDatabase.class, DATABASE_NAME)
 				.setQueryExecutor(databaseWriteExecutor)
 				.setTransactionExecutor(databaseWriteExecutor)
+				.allowMainThreadQueries() // TODO: Remove this!!
 				.addCallback(new Callback()
 				{
+					@Override
+					public void onOpen(@NonNull final SupportSQLiteDatabase db)
+					{
+						super.onOpen(db);
+
+						Log.i(TAG, "Database opened");
+					}
+
 					@Override
 					public void onCreate(@NonNull final SupportSQLiteDatabase db)
 					{
 						// Called only once, after the database is created
 						super.onCreate(db);
-
+						Log.i(TAG, "Database created");
 						ScoresDatabase.databaseWriteExecutor.execute(() ->
 						{
 							final ScoresDatabase database =
@@ -74,8 +86,11 @@ public abstract class ScoresDatabase extends RoomDatabase
 
 	private static void importData(final ScoresDatabase database)
 	{
+		Log.i(TAG, "importData()");
 		database.runInTransaction(() ->
 		{
+			Log.i(TAG, "Inserting data into database");
+
 			final long team1id = database.teamsDao().insert(new TeamEntity("Partizan"));
 			final long team2id = database.teamsDao().insert(new TeamEntity("Real Madrid"));
 			final long team3id = database.teamsDao().insert(new TeamEntity("Joventut"));
@@ -106,8 +121,11 @@ public abstract class ScoresDatabase extends RoomDatabase
 
 	private void updateDatabaseCreated(final Context context)
 	{
+		Log.i(TAG, "Checking if database already exists");
+
 		if (context.getDatabasePath(DATABASE_NAME).exists())
 		{
+			Log.i(TAG, "Database already exists. Using it");
 			setDatabaseCreated();
 		}
 	}

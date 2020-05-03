@@ -9,6 +9,10 @@ public class ScoreTrackerApplication extends Application
 	public ScoreTrackerRepository getRepository()
 	{
 		final ScoresDatabase database = ScoresDatabase.getInstance(this);
-		return ScoreTrackerRepository.getInstance(database);
+		final ScoreTrackerRepository instance = ScoreTrackerRepository.getInstance(database);
+
+		instance.getGamesDetails();
+
+		return instance;
 	}
 }
