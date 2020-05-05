@@ -11,10 +11,10 @@ import androidx.room.PrimaryKey;
 		foreignKeys = {
 				@ForeignKey(entity = TeamEntity.class,
 						parentColumns = "id", childColumns = {"team_a_id"},
-						onUpdate = ForeignKey.CASCADE, onDelete = ForeignKey.NO_ACTION),
+						onUpdate = ForeignKey.CASCADE),
 				@ForeignKey(entity = TeamEntity.class,
 						parentColumns = "id", childColumns = {"team_b_id"},
-						onUpdate = ForeignKey.CASCADE, onDelete = ForeignKey.NO_ACTION)
+						onUpdate = ForeignKey.CASCADE)
 		})
 public class GameEntity
 {

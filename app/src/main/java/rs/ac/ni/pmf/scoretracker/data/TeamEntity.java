@@ -1,5 +1,6 @@
 package rs.ac.ni.pmf.scoretracker.data;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -9,6 +10,7 @@ public class TeamEntity
 	@PrimaryKey(autoGenerate = true)
 	private long id;
 
+	@NonNull
 	private String name;
 
 	public TeamEntity(final String name)
@@ -26,13 +28,23 @@ public class TeamEntity
 		this.id = id;
 	}
 
+	@NonNull
 	public String getName()
 	{
 		return name;
 	}
 
-	public void setName(final String name)
+	public void setName(@NonNull final String name)
 	{
 		this.name = name;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "TeamEntity{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				'}';
 	}
 }

@@ -42,6 +42,23 @@ public class DatabaseTest
 	}
 
 	@Test
+	public void shouldTestFindByName()
+	{
+		final TeamEntity team1 = new TeamEntity("Partizan");
+		final TeamEntity team2 = new TeamEntity("Partizan");
+
+		final long team1Id = teamsDao.insert(team1);
+		final long team2Id = teamsDao.insert(team2);
+
+		final TeamEntity partizan = teamsDao.findByName(team1.getName().toLowerCase());
+		assertThat(partizan).isNotNull();
+		assertThat(partizan.getName()).isEqualTo(team1.getName());
+		assertThat(partizan.getId()).isEqualTo(team1Id);
+
+		Log.i(TAG, partizan.toString());
+	}
+
+	@Test
 	public void shouldInsertAndReadTeams()
 	{
 		final TeamEntity team1 = new TeamEntity("Partizan");

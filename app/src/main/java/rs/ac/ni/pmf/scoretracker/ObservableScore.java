@@ -8,6 +8,7 @@ public class ObservableScore extends BaseObservable
 	private final long gameId;
 	private final String teamA;
 	private final String teamB;
+
 	private final ScoreTrackerRepository repository;
 
 	private int scoreA;

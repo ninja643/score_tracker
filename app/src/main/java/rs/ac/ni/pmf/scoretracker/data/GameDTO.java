@@ -1,7 +1,6 @@
 package rs.ac.ni.pmf.scoretracker.data;
 
 import androidx.room.ColumnInfo;
-
 public class GameDTO
 {
 	@ColumnInfo(name = "id")
@@ -76,17 +75,5 @@ public class GameDTO
 	public void setScoreB(final int scoreB)
 	{
 		this.scoreB = scoreB;
-	}
-
-	@Override
-	public String toString()
-	{
-		return "GameDTO{" +
-				"id=" + id +
-				", teamA='" + teamA + '\'' +
-				", teamB='" + teamB + '\'' +
-				", scoreA=" + scoreA +
-				", scoreB=" + scoreB +
-				'}';
 	}
 }

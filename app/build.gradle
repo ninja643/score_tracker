@@ -42,6 +42,9 @@ dependencies {
     def arch_version = "2.1.0"
     def room_version = "2.2.5"
 
+//    compileOnly 'org.projectlombok:lombok:1.18.12'
+//    annotationProcessor "org.projectlombok:lombok:1.18.12"
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -68,7 +71,8 @@ dependencies {
 
     // Dependencies for local unit tests
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-all:1.10.19'
+    testImplementation 'org.mockito:mockito-core:1.10.19'
+    testImplementation 'org.assertj:assertj-core:3.15.0'
 //    testImplementation 'org.assertj:assertj-core:3.15.0'
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

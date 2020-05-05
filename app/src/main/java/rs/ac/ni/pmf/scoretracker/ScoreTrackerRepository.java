@@ -2,7 +2,6 @@ package rs.ac.ni.pmf.scoretracker;
 
 import java.util.List;
 
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import rs.ac.ni.pmf.scoretracker.data.GameDetails;
 import rs.ac.ni.pmf.scoretracker.data.ScoresDatabase;

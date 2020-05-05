@@ -15,11 +15,20 @@ public interface GamesDao
 	@Insert(onConflict = OnConflictStrategy.ABORT)
 	public long insert(GameEntity gameEntity);
 
+//	@Insert(onConflict = OnConflictStrategy.ABORT)
+//	public long[] insertTwo(GameEntity gameEntity1, GameEntity gameEntity2);
+//
+//	@Insert
+//	public long[] insertMany(GameEntity... entities);
+//
 	@Delete
 	public void delete(GameEntity gameEntity);
 
 	@Update
 	public void update(GameEntity gameEntity);
+
+	@Query("SELECT * FROM games")
+	public List<GameEntity> getGameEntities();
 
 	@Query("SELECT g.id, a.name as team_a, b.name as team_b, g.score_a, g.score_b " +
 			"FROM games g " +

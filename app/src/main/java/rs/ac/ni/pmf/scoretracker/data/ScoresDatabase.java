@@ -13,10 +13,9 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(
-		entities = {TeamEntity.class, GameEntity.class},
+@Database(entities = {TeamEntity.class, GameEntity.class},
 		views = {GameDetails.class},
-		version = 1)
+		version = 2)
 public abstract class ScoresDatabase extends RoomDatabase
 {
 	public static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(4);
@@ -54,6 +53,7 @@ public abstract class ScoresDatabase extends RoomDatabase
 		return Room.databaseBuilder(context.getApplicationContext(), ScoresDatabase.class, DATABASE_NAME)
 				.setQueryExecutor(databaseWriteExecutor)
 				.setTransactionExecutor(databaseWriteExecutor)
+				.fallbackToDestructiveMigration()
 				.allowMainThreadQueries() // TODO: Remove this!!
 				.addCallback(new Callback()
 				{
