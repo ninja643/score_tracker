@@ -15,7 +15,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 @Database(entities = {TeamEntity.class, GameEntity.class},
 		views = {GameDetails.class},
-		version = 2)
+		version = 1)
 public abstract class ScoresDatabase extends RoomDatabase
 {
 	public static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(4);
